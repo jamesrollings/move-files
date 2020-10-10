@@ -21,19 +21,22 @@ const extensions = {
     'Documents\\Javascript': ['.js'],
     'Documents\\Python': ['.py']
 }
-// Doesn't handle files inside folders yet
+
 const moveFiles = (filePath) => {
+    if (filePath.split(path.sep).slice(0, -1).join(path.sep) !== folderToWatch) {
+        return; // files in sub directories will not be moved
+    }
     const fileExtension = path.extname(filePath);
-    const newDirectory = Object.keys(extensions).find(key => extensions[key].includes(fileExtension))
+    const newDirectory = Object.keys(extensions).find(key => extensions[key].includes(fileExtension.toLowerCase()))
     if (newDirectory) {
         const pathToCheck = path.resolve(basePath, newDirectory)
-        if (newDirectory.includes('\\') && !fs.existsSync(pathToCheck)) {
+        if (newDirectory.includes(path.sep) && !fs.existsSync(pathToCheck)) {
             fs.mkdirSync(pathToCheck)
         }
         const newPath = filePath.replace(folderName, newDirectory);
         fs.renameSync(filePath, newPath)
     } else {
-        console.log(`${path.basename(filePath)} hasn't been moved as no mapping exists.`)
+        console.log(`${path.basename(filePath)} hasn't been moved as no mapping exists for ${fileExtension} files.`)
     }
 }
 
