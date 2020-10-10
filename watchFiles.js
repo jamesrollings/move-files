@@ -4,19 +4,16 @@ const chokidar = require('chokidar');
 
 const downloadsFolder = 'C:\\Users\\James.Rollings\\Downloads'
 
-const pictureExtensions = [
-    '.png',
-    '.jpg',
-    '.jpeg'
-]
+const extensions = {
+    'Pictures': ['.png','.jpg','.jpeg'],
+    'Documents': ['.docx', 'doc', 'xlsx']
+}
 
 const moveFiles = (filePath) => {
-    const parentFolder = path.dirname(filePath).split('\\').reverse()[0]
     const fileExtension = path.extname(filePath);
-
-    if (pictureExtensions.includes(fileExtension)) {
-        const newDirectory = 'Pictures'
-        const newPath = filePath.replace(parentFolder, newDirectory);
+    const newDirectory = Object.keys(extensions).find(key => extensions[key].includes(fileExtension))
+    if (newDirectory) {
+        const newPath = filePath.replace('Downloads', newDirectory);
         fs.renameSync(filePath, newPath)
     }
 }
