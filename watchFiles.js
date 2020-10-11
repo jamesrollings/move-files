@@ -48,4 +48,4 @@ const moveFiles = (filePath) => {
   }
 };
 
-chokidar.watch(folderToWatch).on('add', (strPath) => moveFiles(strPath));
+chokidar.watch(folderToWatch, { awaitWriteFinish: true, ignorePermissionErrors: true }).on('add', (strPath) => moveFiles(strPath));
