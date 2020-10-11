@@ -23,8 +23,10 @@ const extensions = {
 }
 
 const moveFiles = (filePath) => {
-    if (filePath.split(path.sep).slice(0, -1).join(path.sep) !== folderToWatch) {
-        return; // files in sub directories will not be moved
+    const pathWithoutBaseName = filePath.split(path.sep).slice(0, -1);
+    if (pathWithoutBaseName.join(path.sep) !== folderToWatch) {
+        console.log(`${path.basename(filePath)} exists in subdirectory: ${pathWithoutBaseName[pathWithoutBaseName.length - 1]} so won't be moved`)
+        return;
     }
     const fileExtension = path.extname(filePath);
     const newDirectory = Object.keys(extensions).filter(key => extensions[key].includes(fileExtension.toLowerCase()))
