@@ -2,6 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
+const chalk = require('chalk');
 
 const folderName = 'Downloads';
 const basePath = path.resolve(process.env.HOMEDRIVE, process.env.HOMEPATH);
@@ -25,14 +26,14 @@ const extensions = {
 const moveFiles = (filePath) => {
   const pathWithoutBaseName = filePath.split(path.sep).slice(0, -1);
   if (pathWithoutBaseName.join(path.sep) !== folderToWatch) {
-    console.log(`${path.basename(filePath)} exists in subdirectory: ${pathWithoutBaseName[pathWithoutBaseName.length - 1]} so won't be moved`);
+    console.log(`${chalk.greenBright(path.basename(filePath))} exists in subdirectory ${chalk.redBright(pathWithoutBaseName[pathWithoutBaseName.length - 1])} so won't be moved`);
     return;
   }
   const fileExtension = path.extname(filePath);
   const newDirectory = Object.keys(extensions).filter((key) => extensions[key].includes(fileExtension.toLowerCase()));
   if (newDirectory.length) {
     if (newDirectory.length !== 1) {
-      console.log(`Multiple mappings found for ${fileExtension} files, no files of this type will be moved.`);
+      console.log(`Multiple mappings found for ${chalk.magentaBright(fileExtension)} files, no files of this type will be moved.`);
       return;
     }
     const pathToCheck = path.resolve(basePath, newDirectory[0]);
@@ -42,7 +43,7 @@ const moveFiles = (filePath) => {
     const newPath = filePath.replace(folderName, newDirectory[0]);
     fs.renameSync(filePath, newPath);
   } else {
-    console.log(`${path.basename(filePath)} hasn't been moved as no mapping exists for ${fileExtension} files.`);
+    console.log(`${chalk.greenBright(path.basename(filePath))} hasn't been moved as no mapping exists for ${chalk.magentaBright(fileExtension)} files.`);
   }
 };
 
