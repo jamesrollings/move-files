@@ -24,9 +24,9 @@ const extensions = {
 };
 
 const moveFiles = (filePath) => {
-  const pathWithoutBaseName = filePath.split(path.sep).slice(0, -1);
-  if (pathWithoutBaseName.join(path.sep) !== folderToWatch) {
-    console.log(`${chalk.greenBright(path.basename(filePath))} exists in subdirectory ${chalk.redBright(pathWithoutBaseName[pathWithoutBaseName.length - 1])} so won't be moved`);
+  const pathWithoutBaseName = filePath.split(path.sep).slice(0, -1).join(path.sep);
+  if (pathWithoutBaseName !== folderToWatch) {
+    console.log(`${chalk.greenBright(path.basename(filePath))} exists in subdirectory ${chalk.redBright(pathWithoutBaseName.replace(basePath, '').replace(`${path.sep}${folderName}${path.sep}`, ''))} so won't be moved`);
     return;
   }
   const fileExtension = path.extname(filePath);
@@ -42,6 +42,7 @@ const moveFiles = (filePath) => {
     }
     const newPath = filePath.replace(folderName, newDirectory[0]);
     fs.renameSync(filePath, newPath);
+    console.log(`Moved ${chalk.greenBright(path.basename(filePath))} to ${chalk.cyanBright(newPath.replace(basePath, '').substring(1))}`);
   } else {
     console.log(`${chalk.greenBright(path.basename(filePath))} hasn't been moved as no mapping exists for ${chalk.magentaBright(fileExtension)} files.`);
   }
