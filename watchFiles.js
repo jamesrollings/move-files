@@ -13,10 +13,10 @@ const extensions = {
     'Documents\\PDF': ['.pdf'],
     'Documents\\Excel': ['.xlsx', '.xls'],
     'Documents\\CSV': ['.csv'],
-    'Documents\\Text': ['.txt'],
+    'Documents\\Text': ['.txt', '.log'],
     'Documents\\JSON': ['.json'],
     'Documents\\YAML': ['.yml', '.yaml'],
-    'Documents\\Zipped': ['.zip', '.7z'],
+    'Documents\\Zipped': ['.zip', '.7z', '.rar'],
     'Documents\\Installation': ['.exe', '.msi'],
     'Documents\\Javascript': ['.js'],
     'Documents\\Python': ['.py']
@@ -27,13 +27,17 @@ const moveFiles = (filePath) => {
         return; // files in sub directories will not be moved
     }
     const fileExtension = path.extname(filePath);
-    const newDirectory = Object.keys(extensions).find(key => extensions[key].includes(fileExtension.toLowerCase()))
-    if (newDirectory) {
-        const pathToCheck = path.resolve(basePath, newDirectory)
-        if (newDirectory.includes(path.sep) && !fs.existsSync(pathToCheck)) {
+    const newDirectory = Object.keys(extensions).filter(key => extensions[key].includes(fileExtension.toLowerCase()))
+    if (newDirectory.length) {
+        if (newDirectory.length !== 1) {
+            console.log(`Multiple mappings found for ${fileExtension} files, no files of this type will be moved.`)
+            return;
+        }
+        const pathToCheck = path.resolve(basePath, newDirectory[0])
+        if (newDirectory[0].includes(path.sep) && !fs.existsSync(pathToCheck)) {
             fs.mkdirSync(pathToCheck)
         }
-        const newPath = filePath.replace(folderName, newDirectory);
+        const newPath = filePath.replace(folderName, newDirectory[0]);
         fs.renameSync(filePath, newPath)
     } else {
         console.log(`${path.basename(filePath)} hasn't been moved as no mapping exists for ${fileExtension} files.`)
