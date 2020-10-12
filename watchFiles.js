@@ -10,17 +10,19 @@ const folderToWatch = path.resolve(basePath, folderName);
 
 const extensions = {
   'Pictures': ['.png', '.jpg', '.jpeg'],
-  'Documents\\Word': ['.docx', '.doc'],
-  'Documents\\PDF': ['.pdf'],
-  'Documents\\Excel': ['.xlsx', '.xls'],
-  'Documents\\CSV': ['.csv'],
-  'Documents\\Text': ['.txt', '.log'],
-  'Documents\\JSON': ['.json'],
-  'Documents\\YAML': ['.yml', '.yaml'],
-  'Documents\\Zipped': ['.zip', '.7z', '.rar'],
-  'Documents\\Installation': ['.exe', '.msi'],
-  'Documents\\Javascript': ['.js'],
-  'Documents\\Python': ['.py'],
+  [`Documents${path.sep}Word`]: ['.docx', '.doc'],
+  [`Documents${path.sep}PDF`]: ['.pdf'],
+  [`Documents${path.sep}Excel`]: ['.xlsx', '.xls'],
+  [`Documents${path.sep}CSV`]: ['.csv'],
+  [`Documents${path.sep}Text`]: ['.txt', '.log'],
+  [`Documents${path.sep}JSON`]: ['.json'],
+  [`Documents${path.sep}YAML`]: ['.yml', '.yaml'],
+  [`Documents${path.sep}Zipped`]: ['.zip', '.7z', '.rar'],
+  [`Documents${path.sep}Installation`]: ['.exe', '.msi'],
+  [`Documents${path.sep}Javascript`]: ['.js'],
+  [`Documents${path.sep}Python`]: ['.py'],
+  [`Documents${path.sep}Email`]: ['.eml', '.msg'],
+  [`Documents${path.sep}HTMLCSS`]: ['.html', '.css'],
 };
 
 const moveFiles = (filePath) => {
