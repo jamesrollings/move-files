@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import fs from 'fs-extra';
+import fs from 'fs/promises';
 import path from 'path';
 import chokidar from 'chokidar';
 import chalk from 'chalk';
@@ -43,8 +43,16 @@ function extensionHasMapping(extension: string): boolean {
   return arrExtensions.includes(extension);
 }
 
-async function moveFiles(filePath: string) {
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await fs.access(path);
+    return true;
+  } catch (err) {
+    return false
+  }
+}
 
+async function moveFiles(filePath: string) {
   const fileExtension = path.extname(filePath);
 
   if (fileExtension.length === 0 || !extensionHasMapping(fileExtension)) {
@@ -68,7 +76,7 @@ async function moveFiles(filePath: string) {
     }
   
     const pathToCheck = path.resolve(basePath, newDirectory[0]);
-    const pathDoesExist = await fs.pathExists(pathToCheck)
+    const pathDoesExist = await pathExists(pathToCheck)
   
     if (newDirectory[0].includes(path.sep) && !pathDoesExist) {
       await fs.mkdir(pathToCheck);
