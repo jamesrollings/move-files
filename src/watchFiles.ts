@@ -6,11 +6,22 @@ import chalk from 'chalk';
 
 dotenv.config();
 
-const folderName = 'Downloads';
-const basePath: string = path.resolve(process.env.HOMEDRIVE!, process.env.HOMEPATH!);
-const folderToWatch: string = path.resolve(basePath, folderName);
+interface Extensions {
+  [path: string] : string[]
+}
 
-const extensions: {[path: string] : string[]} = {
+const homeDrive = process.env.HOMEDRIVE ?? '';
+const homePath = process.env.HOMEPATH ?? '';
+
+if (homePath.length === 0 || homeDrive.length === 0) {
+  process.exit(1);
+}
+
+const folderName = 'Downloads';
+const basePath = path.resolve(homeDrive, homePath);
+const folderToWatch = path.resolve(basePath, folderName);
+
+const extensions: Extensions = {
   'Pictures': ['.png', '.jpg', '.jpeg'],
   [`Documents${path.sep}Word`]: ['.docx', '.doc'],
   [`Documents${path.sep}PDF`]: ['.pdf'],
