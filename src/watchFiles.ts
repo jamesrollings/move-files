@@ -89,4 +89,8 @@ async function moveFiles(filePath: string) {
   }
 }
 
-chokidar.watch(folderToWatch, { awaitWriteFinish: true, ignorePermissionErrors: true }).on('add', async (strPath) => await moveFiles(strPath));
+if (require.main === module) {
+  chokidar.watch(folderToWatch, { awaitWriteFinish: true, ignorePermissionErrors: true }).on('add', async (strPath) => await moveFiles(strPath));
+}
+
+export default { extensionHasMapping, pathExists, moveFiles }
