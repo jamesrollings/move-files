@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
     "start": "yarn tsc && node ./dist/watchFiles.js"
   },
@@ -16,11 +15,14 @@
   "license": "ISC",
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^28.1.4",
     "@typescript-eslint/eslint-plugin": "^5.30.4",
     "@typescript-eslint/parser": "^5.30.4",
     "chalk": "^4.1.0",
     "chokidar": "^3.4.2",
     "dotenv": "^8.2.0",
+    "jest": "^28.1.2",
+    "ts-jest": "^28.0.5",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
